@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,11 +55,17 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register( @RequestBody SignUpForm user) {
+    public ResponseEntity<?> register(@Valid @RequestBody SignUpForm user) {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Confirm password not match, please try again!",HttpStatus.OK);
         }
-        String avatar = "avatar.jpg";
+        if (user.getUsername().trim().equals("") || user.getName().trim().equals("") || user.getPassword().trim().equals("")){
+            return new ResponseEntity<>("Please enter all the fields!", HttpStatus.OK);
+        }
+        if (userService.existsByUsername(user.getUsername())){
+            return new ResponseEntity<>("This username is already exist, please try again!",HttpStatus.OK);
+        }
+        String avatar = "https://firebasestorage.googleapis.com/v0/b/imagesave-e6d91.appspot.com/o/images%2Fdefault-avatar.png?alt=media&token=0bd1d566-65fb-4b9f-b03c-aca34ca6618b";
         User user1 = new User(user.getUsername(), user.getPassword());
         userService.save(user1);
         UserInfo userInfo = new UserInfo(
@@ -70,7 +77,7 @@ public class AuthController {
                 user1
         );
         userInfoService.save(userInfo);
-        return new ResponseEntity<>( HttpStatus.CREATED);
+        return new ResponseEntity<>("Create success!", HttpStatus.CREATED);
     }
 
     @PostMapping("/changePassword/{id}")

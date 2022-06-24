@@ -5,10 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"username"})
+})
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -20,6 +25,7 @@ public class User {
     private String username;
 
     @Column(nullable = false)
+    @NotBlank
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)

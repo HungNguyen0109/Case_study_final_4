@@ -58,4 +58,9 @@ public class UserService implements IUserService {
     public User findByUserName(String username) {
         return userRepository.findByUsername(username);
     }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
 }
