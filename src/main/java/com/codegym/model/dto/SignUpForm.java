@@ -22,6 +22,8 @@ public class SignUpForm {
 
     private String phoneNumber;
 
+    private String email;
+
     private String birthDay;
 
     private String address;

@@ -59,43 +59,57 @@ public class AuthController {
         if (!user.getPassword().equals(user.getConfirmPassword())) {
             return new ResponseEntity<>("Confirm password not match, please try again!",HttpStatus.OK);
         }
-        if (user.getUsername().trim().equals("") || user.getName().trim().equals("") || user.getPassword().trim().equals("")){
+        if (user.getUsername().trim().equals("") || user.getName().trim().equals("") || user.getPassword().trim().equals("") || user.getEmail().trim().equals("")){
             return new ResponseEntity<>("Please enter all the fields!", HttpStatus.OK);
         }
         if (userService.existsByUsername(user.getUsername())){
             return new ResponseEntity<>("This username is already exist, please try again!",HttpStatus.OK);
         }
-        String avatar = "https://firebasestorage.googleapis.com/v0/b/imagesave-e6d91.appspot.com/o/images%2Fdefault-avatar.png?alt=media&token=0bd1d566-65fb-4b9f-b03c-aca34ca6618b";
-        User user1 = new User(user.getUsername(), user.getPassword());
-        userService.save(user1);
-        UserInfo userInfo = new UserInfo(
-                user.getName(),
-                avatar,
-                user.getPhoneNumber(),
-                user.getBirthDay(),
-                user.getAddress(),
-                user1
-        );
-        userInfoService.save(userInfo);
-        return new ResponseEntity<>("Create success!", HttpStatus.CREATED);
+        if (userInfoService.existsByEmail(user.getEmail())){
+            return new ResponseEntity<>("This email is already exist", HttpStatus.OK);
+        }
+        if (!user.getEmail().matches("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+                + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$")){
+            return new ResponseEntity<>("Not an email, try again!", HttpStatus.OK);
+
+        }
+        else {
+            String avatar = "https://firebasestorage.googleapis.com/v0/b/imagesave-e6d91.appspot.com/o/images%2Fdefault-avatar.png?alt=media&token=8e308959-ef07-4512-ab12-5432a170b74b";
+            User user1 = new User(user.getUsername(), user.getPassword());
+            userService.save(user1);
+            UserInfo userInfo = new UserInfo(
+                    user.getName(),
+                    avatar,
+                    user.getPhoneNumber(),
+                    user.getEmail(),
+                    user.getBirthDay(),
+                    user.getAddress(),
+                    user1
+            );
+            userInfoService.save(userInfo);
+            return new ResponseEntity<>("Create success!", HttpStatus.CREATED);
+        }
     }
 
     @PostMapping("/changePassword/{id}")
-    public ResponseEntity<User> changePassword(@PathVariable Long id, @RequestBody ChangePassword changePassword) {
+    public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody ChangePassword changePassword) {
         Optional<User> user = this.userService.findById(id);
         String newPassword;
         String oldPassword = changePassword.getOldPassword();
         if (!user.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } else {
+            if (changePassword.getNewPassword().trim().equals("")){
+                return new ResponseEntity<>("Password cannot be empty!",HttpStatus.OK);
+            }
             if (passwordEncoder.matches(oldPassword, user.get().getPassword())) {
                 if (changePassword.getNewPassword().equals(changePassword.getConfirmNewPassword())) {
                     newPassword = changePassword.getNewPassword();
                 } else {
-                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity<>("Confirm password not match!",HttpStatus.OK);
                 }
             } else {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>("Current password not true!",HttpStatus.OK);
             }
         }
         user.get().setPassword(newPassword);

@@ -6,12 +6,14 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"email"})
+})
 public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,15 +25,26 @@ public class UserInfo {
 
     private String phoneNumber;
 
+    @Email
+    private String email;
+
     private String birthDay;
 
     private String address;
 
-    @Email
-    private String email;
-
     @OneToOne
     private User user;
+
+
+    public UserInfo(String name, String avatar, String phoneNumber, String email, String birthDay, String address, User user) {
+        this.name = name;
+        this.avatar = avatar;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.birthDay = birthDay;
+        this.address = address;
+        this.user = user;
+    }
 
     public UserInfo(String name, String avatar, String phoneNumber, String birthDay, String address, User user) {
         this.name = name;

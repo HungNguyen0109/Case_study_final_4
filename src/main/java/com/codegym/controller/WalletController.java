@@ -152,6 +152,23 @@ public class WalletController {
         return new ResponseEntity<>(walletSV.save(wallet1), HttpStatus.OK);
     }
 
+    @PostMapping("/createWallet1/{idUser}")
+    public ResponseEntity<Wallet> create1(@RequestBody Wallet wallet, @PathVariable Long idUser) {
+        User user = userService.findById(idUser).get();
+        Wallet wallet1 = new Wallet(wallet.getName(), wallet.getIcon(), wallet.getTotal(),wallet.getMoneyType(), wallet.getNote(), user );
+        wallet1.setDate(new Date());
+        wallet1.setBalance(wallet.getTotal());
+        AddMoney addMoney = new AddMoney(wallet1.getTotal(), wallet1.getDate(), wallet1);
+        addMoneySV.save(addMoney);
+        if (wallet1.getNote() == null){
+            wallet1.setNote("Không có ghi chú");
+        }
+        if (wallet1.getIcon() == null) {
+            wallet1.setIcon(new Icon(1L, "https://static.moneylover.me/img/icon/icon.png"));
+        }
+        return new ResponseEntity<>(walletSV.save(wallet1), HttpStatus.OK);
+    }
+
 
     //Người dùng xóa ví của chính mình, ko xóa ví người khác.
     @DeleteMapping("/{idUser}/{idWallet}")

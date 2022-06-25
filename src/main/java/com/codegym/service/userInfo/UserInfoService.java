@@ -42,4 +42,9 @@ public class UserInfoService implements IUserInfoService {
     public Long findUserByUserInfo(Long id) {
         return userInfoRepository.findUserByUserInfo(id);
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userInfoRepository.existsByEmail(email);
+    }
 }

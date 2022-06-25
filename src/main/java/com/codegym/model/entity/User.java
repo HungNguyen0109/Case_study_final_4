@@ -28,6 +28,8 @@ public class User {
     @NotBlank
     private String password;
 
+
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role")
     private List<Role> roles;
