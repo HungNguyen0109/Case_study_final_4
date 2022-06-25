@@ -1,5 +1,6 @@
 package com.codegym.repository;
 
+import com.codegym.model.entity.MoneyByCategory;
 import com.codegym.model.entity.Transaction;
 import com.codegym.model.transactionInDay.*;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -46,5 +47,6 @@ public interface ITransactionRepo extends JpaRepository<Transaction, Long> {
 
     @Query(nativeQuery = true, value = "select sum(amount) as outFlow from transactions where wallet_id = ? and Month(date) = ? and Year(date) = ?;")
     int getOutFlow(Long idWallet, int month, int year);
+
 
 }

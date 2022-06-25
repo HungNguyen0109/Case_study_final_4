@@ -204,7 +204,25 @@ public class WalletController {
          if (outFlow == null){
              outFlow = 0;
          };
-        InOut inOut = new InOut(month, year, inFlow, outFlow, wallet);
+        InOut inOut = new InOut(day, month, year, inFlow, outFlow, wallet);
+        return new ResponseEntity<>(inOut, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/inOutMonth/{idUser}")
+    public ResponseEntity<InOut> getMonthInOut(@PathVariable Long idUser,
+                                          @RequestParam int month,
+                                          @RequestParam int year) {
+        User user = userService.findById(idUser).get();
+        Integer inFlow = inOutSV.getMonthInFlow(idUser, month, year);
+        Integer outFlow = inOutSV.getMonthOutFlow(idUser, month, year);
+        if (inFlow == null){
+            inFlow = 0;
+        };
+        if (outFlow == null){
+            outFlow = 0;
+        };
+        InOut inOut = new InOut(month, year, inFlow, outFlow, user);
         return new ResponseEntity<>(inOut, HttpStatus.OK);
     }
 

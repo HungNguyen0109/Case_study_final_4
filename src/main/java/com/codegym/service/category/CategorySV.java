@@ -2,6 +2,7 @@ package com.codegym.service.category;
 
 import com.codegym.model.dto.ShowCategory;
 import com.codegym.model.entity.Category;
+import com.codegym.model.entity.Transaction;
 import com.codegym.repository.ICategoryRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,5 +40,7 @@ public class CategorySV implements ICategorySV{
     public Iterable<ShowCategory> getAllCategoryByUserId(Long user_id) {
         return categoryRepo.getAllCategoryByUserId(user_id);
     }
+
+
 
 }

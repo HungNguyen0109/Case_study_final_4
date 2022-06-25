@@ -1,7 +1,9 @@
 package com.codegym.service.Transaction;
 
+import com.codegym.model.entity.MoneyByCategory;
 import com.codegym.model.entity.Transaction;
 import com.codegym.model.transactionInDay.SumInDay;
+import com.codegym.model.transactionInDay.TransactionUser;
 import com.codegym.repository.ITransactionRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

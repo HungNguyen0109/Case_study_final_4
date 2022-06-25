@@ -3,6 +3,7 @@ package com.codegym.controller;
 
 import com.codegym.model.dto.ShowCategory;
 import com.codegym.model.entity.Category;
+import com.codegym.model.entity.Transaction;
 import com.codegym.model.entity.User;
 import com.codegym.service.category.ICategorySV;
 import com.codegym.service.user.IUserService;
@@ -71,5 +72,6 @@ public class    CategoryController {
         Iterable<ShowCategory> showCategories = categoryService.getAllCategoryByUserId(user_id);
         return new ResponseEntity<>(showCategories, HttpStatus.OK);
     }
+
 
 }

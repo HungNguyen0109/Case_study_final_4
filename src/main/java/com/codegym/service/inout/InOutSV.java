@@ -42,6 +42,16 @@ public class InOutSV implements IInOutSV{
     }
 
     @Override
+    public Integer getMonthOutFlow(Long idWallet, int month, int year) {
+        return inOutRepo.getMonthOutFlow(idWallet,month,year);
+    }
+
+    @Override
+    public Integer getMonthInFlow(Long idWallet, int month, int year) {
+        return inOutRepo.getMonthInFlow(idWallet,month,year);
+    }
+
+    @Override
     public Integer getIncomeTotal(Long userId) {
         return inOutRepo.getIncomeTotal(userId);
     }

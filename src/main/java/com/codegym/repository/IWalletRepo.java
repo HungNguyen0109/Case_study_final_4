@@ -24,4 +24,6 @@ public interface IWalletRepo extends JpaRepository<Wallet, Long> {
             "where user_id = ? group by mt.name;")
     List<SumMoney> getSumMoney(Long user_id);
 
+
+
 }

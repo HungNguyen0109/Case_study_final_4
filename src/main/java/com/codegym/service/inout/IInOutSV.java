@@ -5,8 +5,10 @@ import com.codegym.service.IGeneralService;
 
 public interface IInOutSV extends IGeneralService<InOut> {
     Integer getInFlow(Long idWallet,int day, int month, int year);
+    Integer getMonthInFlow(Long idWallet, int month, int year);
 
     Integer getOutFlow(Long idWallet,int day, int month, int year);
+    Integer getMonthOutFlow(Long idWallet, int month, int year);
 
     Integer getIncomeTotal(Long userId);
 

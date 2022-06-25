@@ -4,6 +4,7 @@ import com.codegym.model.entity.*;
 import com.codegym.model.transactionInDay.*;
 import com.codegym.service.Transaction.ITransactionSV;
 import com.codegym.service.category.ICategorySV;
+import com.codegym.service.moneyByCategory.IMoneyByCategorySV;
 import com.codegym.service.user.IUserService;
 import com.codegym.service.wallet.IWalletSV;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class TransactionController {
     private ITransactionSV transactionService;
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IMoneyByCategorySV iMoneyByCategorySV;
 
     @Autowired
     private ICategorySV categorySv;
@@ -165,4 +169,11 @@ public class TransactionController {
         }
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
+
+    @GetMapping("/listCate/{user_id}")
+    public ResponseEntity<Iterable<MoneyByCategory>> showAllCategoryByUserIdGroup(@PathVariable Long user_id) {
+        Iterable<MoneyByCategory> showCategories = iMoneyByCategorySV.getAllCategoryByUserIDGroup(user_id);
+        return new ResponseEntity<>(showCategories, HttpStatus.OK);
+    }
+
 }

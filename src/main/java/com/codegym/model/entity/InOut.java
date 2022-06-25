@@ -11,6 +11,8 @@ public class InOut {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private int day;
+
     private int year;
 
     private int month;
@@ -22,7 +24,28 @@ public class InOut {
     @ManyToOne
     private Wallet wallet;
 
+    @ManyToOne
+    private User user;
+
     public InOut() {
+    }
+
+    public InOut(  int month, int year,int inFlow, int outFlow, User user) {
+        this.day = day;
+        this.year = year;
+        this.month = month;
+        this.inFlow = inFlow;
+        this.outFlow = outFlow;
+        this.user = user;
+    }
+
+    public InOut(int day, int year, int month, int inFlow, int outFlow, Wallet wallet) {
+        this.day = day;
+        this.year = year;
+        this.month = month;
+        this.inFlow = inFlow;
+        this.outFlow = outFlow;
+        this.wallet = wallet;
     }
 
     public InOut(Long id, int year, int month, int inFlow, int outFlow, Wallet wallet) {

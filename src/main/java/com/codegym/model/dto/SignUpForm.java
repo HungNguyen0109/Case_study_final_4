@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 
 @Data
 @AllArgsConstructor
@@ -22,4 +25,7 @@ public class SignUpForm {
     private String birthDay;
 
     private String address;
+
+    @Email
+    private String email;
 }

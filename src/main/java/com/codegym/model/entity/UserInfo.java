@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @NoArgsConstructor
@@ -24,6 +26,9 @@ public class UserInfo {
     private String birthDay;
 
     private String address;
+
+    @Email
+    private String email;
 
     @OneToOne
     private User user;
