@@ -50,6 +50,18 @@ public class AddMoneyController {
         return new ResponseEntity<>(addMoneyService.save(addMoney1), HttpStatus.CREATED);
     }
 
+    @PostMapping("/addByWalletName/{wallet_name}")
+    public ResponseEntity<AddMoney> saveAddMoney1(@RequestBody AddMoney addMoney, @PathVariable String wallet_name) {
+        Wallet wallet = walletService.findWalletByName(wallet_name).get();
+        int walletMoney = wallet.getTotal();
+        int balanceMoney = wallet.getBalance();
+        int money = addMoney.getMoney();
+        wallet.setTotal(walletMoney + money);
+        wallet.setBalance(balanceMoney + money);
+        AddMoney addMoney1 = new AddMoney(money, new Date(), wallet);
+        return new ResponseEntity<>(addMoneyService.save(addMoney1), HttpStatus.CREATED);
+    }
+
     @PostMapping("/addMoneyInTimeByIdWallet")
     public ResponseEntity<Iterable<AddMoney>> getAddMoneyInTimeByIdWallet (@RequestBody DateDTO date){
         Iterable<AddMoney> addMoneyInTimes = addMoneyService.getListAddMoneyInTimeByIdWallet(date.getDate1(), date.getDate2(), date.getWallet().getId());

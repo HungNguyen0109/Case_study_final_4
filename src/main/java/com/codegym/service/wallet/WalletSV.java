@@ -43,5 +43,13 @@ public class WalletSV implements IWalletSV{
         walletRepo.deleteWallet(wallet_id);
     }
 
+    @Override
+    public boolean existsByName(String walletName) {
+        return walletRepo.existsByName(walletName);
+    }
 
+    @Override
+    public Optional<Wallet> findWalletByName(String name) {
+        return walletRepo.findWalletByName(name);
+    }
 }

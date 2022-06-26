@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
+
 @Transactional
 @Repository
 public interface IWalletRepo extends JpaRepository<Wallet, Long> {
@@ -24,6 +26,8 @@ public interface IWalletRepo extends JpaRepository<Wallet, Long> {
             "where user_id = ? group by mt.name;")
     List<SumMoney> getSumMoney(Long user_id);
 
+    boolean existsByName(String walletName);
 
+    Optional<Wallet> findWalletByName(String name);
 
 }

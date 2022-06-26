@@ -68,6 +68,9 @@ public class UserInfoController {
         if (userInfo.getAvatar().trim().equals("")){
             userInfo.setAvatar(userInfo1.getAvatar());
         }
+        if (userInfo.getEmail().trim().equals("")){
+            userInfo.setEmail(userInfo1.getEmail());
+        }
         userInfo.setUser(user);
         userInfoService.save(userInfo);
         return new ResponseEntity<>(userInfo, HttpStatus.OK);

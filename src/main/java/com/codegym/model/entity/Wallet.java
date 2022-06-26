@@ -6,7 +6,9 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "wallets")
+@Table(name = "wallets", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "name")
+})
 @Data
 public class Wallet {
     @Id

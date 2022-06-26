@@ -81,6 +81,13 @@ public class WalletController {
 //        return new ResponseEntity<>(wallets, HttpStatus.OK);
 //    }
 
+    @GetMapping("/findWalletByName/{name}")
+    ResponseEntity<?> findWalletByName(@PathVariable String name){
+        Wallet wallet = walletSV.findWalletByName(name).get();
+        return new  ResponseEntity<>(wallet,HttpStatus.OK);
+    }
+
+
     //Lấy ra tất cả ví của người dùng
     @GetMapping("/getWalletByUserId/{id}")
     public ResponseEntity<List<Wallet>> findAllWalletByUserId(@PathVariable Long id){
@@ -153,7 +160,10 @@ public class WalletController {
     }
 
     @PostMapping("/createWallet1/{idUser}")
-    public ResponseEntity<Wallet> create1(@RequestBody Wallet wallet, @PathVariable Long idUser) {
+    public ResponseEntity<?> create1(@RequestBody Wallet wallet, @PathVariable Long idUser) {
+        if (walletSV.existsByName(wallet.getName())){
+            return new ResponseEntity<>("This name is already exist, try another one!",HttpStatus.OK);
+        }
         User user = userService.findById(idUser).get();
         Wallet wallet1 = new Wallet(wallet.getName(), wallet.getIcon(), wallet.getTotal(),wallet.getMoneyType(), wallet.getNote(), user );
         wallet1.setDate(new Date());
