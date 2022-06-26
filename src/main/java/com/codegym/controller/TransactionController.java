@@ -1,5 +1,6 @@
 package com.codegym.controller;
 
+import com.codegym.model.dto.TransactionDTO1;
 import com.codegym.model.entity.*;
 import com.codegym.model.transactionInDay.*;
 import com.codegym.service.Transaction.ITransactionSV;
@@ -45,6 +46,23 @@ public class TransactionController {
         int money = transaction.getAmount();
         wallet.setBalance(walletMoney - money);
         Transaction transaction1 = new Transaction(transaction.getAmount(), transaction.getNote(), transaction.getDate(), transaction.getCategory(), transaction.getWallet(), user);
+        if (transaction1.getDate() == null) {
+            transaction1.setDate(new Date());
+        }
+        return new ResponseEntity<>(transactionService.save(transaction1), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/createTransaction/{idUser}")
+    public ResponseEntity<Transaction> saveTransaction1(@PathVariable Long idUser, @RequestBody TransactionDTO1 transaction) throws ParseException {
+        User user = userService.findById(idUser).get();
+        String walletName = transaction.getWallet_name();
+        String categoryName = transaction.getCategory_name();
+        Category category = categoryService.findByName(categoryName).get();
+        Wallet wallet =  walletService.findWalletByName(walletName).get();
+        int walletMoney = wallet.getBalance();
+        int money = transaction.getMoney_amount();
+        wallet.setBalance(walletMoney - money);
+        Transaction transaction1 = new Transaction(transaction.getMoney_amount(), transaction.getNote(), transaction.getDate(), category, wallet, user);
         if (transaction1.getDate() == null) {
             transaction1.setDate(new Date());
         }
