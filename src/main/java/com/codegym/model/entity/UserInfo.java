@@ -25,7 +25,7 @@ public class UserInfo {
 
     private String phoneNumber;
 
-    @Email
+
     private String email;
 
     private String birthDay;
@@ -69,4 +69,6 @@ public class UserInfo {
         this.birthDay = birthDay;
         this.address = address;
     }
+
+
 }

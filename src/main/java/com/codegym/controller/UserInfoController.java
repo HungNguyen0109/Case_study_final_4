@@ -68,7 +68,7 @@ public class UserInfoController {
         if (userInfo.getAvatar().trim().equals("")){
             userInfo.setAvatar(userInfo1.getAvatar());
         }
-        if (userInfo.getEmail().trim().equals("")){
+        if (userInfo.getEmail().equals("")){
             userInfo.setEmail(userInfo1.getEmail());
         }
         userInfo.setUser(user);
