@@ -3,6 +3,7 @@ package com.codegym.model.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -27,10 +28,11 @@ public class InOut {
     @ManyToOne
     private User user;
 
+
     public InOut() {
     }
 
-    public InOut(  int month, int year,int inFlow, int outFlow, User user) {
+    public InOut(int month, int year, int inFlow, int outFlow, User user) {
         this.day = day;
         this.year = year;
         this.month = month;

@@ -1,5 +1,6 @@
 package com.codegym.service.Transaction;
 
+import com.codegym.model.entity.AddMoney;
 import com.codegym.model.entity.MoneyByCategory;
 import com.codegym.model.entity.Transaction;
 import com.codegym.model.transactionInDay.*;
@@ -30,6 +31,7 @@ public interface ITransactionSV extends IGeneralService<Transaction> {
 
     int getOutFlow(Long idWallet, int month, int year);
 
+    Iterable<Transaction> getListTransactionsByUser(Long idUser);
 
 
 }

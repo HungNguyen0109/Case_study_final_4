@@ -11,4 +11,5 @@ public interface IAddMoneySV extends IGeneralService<AddMoney> {
 
     Iterable<AddMoney> getListAddMoneyInTimeByIdWallet(Date date1, Date date2, Long idWallet);
     Iterable<AddMoney> getAllAddMoneyByIdUser(Long idUser);
+    Iterable<AddMoney> getListAddMoneyByUser(Long idUser);
 }

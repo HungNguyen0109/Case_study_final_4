@@ -4,7 +4,9 @@ package com.codegym.controller;
 import com.codegym.model.dto.SumMoney;
 import com.codegym.model.entity.*;
 import com.codegym.model.entity.Wallet;
+import com.codegym.service.Transaction.ITransactionSV;
 import com.codegym.service.addMoney.IAddMoneySV;
+import com.codegym.service.calender.ICalenderSV;
 import com.codegym.service.iconUser.IIconSV;
 import com.codegym.service.inout.IInOutSV;
 import com.codegym.service.moneyType.MoneyTypeSV;
@@ -30,6 +32,11 @@ public class WalletController {
     @Autowired
     private WalletSV walletSV;
 
+
+    @Autowired
+    private ICalenderSV calenderSV;
+
+
     @Autowired
     Environment evn;
 
@@ -47,6 +54,9 @@ public class WalletController {
 
     @Autowired
     private IAddMoneySV addMoneySV;
+
+    @Autowired
+    private ITransactionSV transactionSV;
 
     @Autowired
     private IInOutSV inOutSV;
@@ -210,12 +220,11 @@ public class WalletController {
 
 
     @GetMapping("/inOutMonth/{idUser}")
-    public ResponseEntity<InOut> getMonthInOut(@PathVariable Long idUser,
-                                          @RequestParam int month,
-                                          @RequestParam int year) {
+    public ResponseEntity<InOut> getMonthInOut(@PathVariable Long idUser, @RequestParam int month, @RequestParam int year) {
         User user = userService.findById(idUser).get();
         Integer inFlow = inOutSV.getMonthInFlow(idUser, month, year);
         Integer outFlow = inOutSV.getMonthOutFlow(idUser, month, year);
+
         if (inFlow == null){
             inFlow = 0;
         };
@@ -225,6 +234,28 @@ public class WalletController {
         InOut inOut = new InOut(month, year, inFlow, outFlow, user);
         return new ResponseEntity<>(inOut, HttpStatus.OK);
     }
+
+    @GetMapping("/calender/{idUser}")
+    public ResponseEntity<Calender> getCalender(@PathVariable Long idUser,@RequestParam int day, @RequestParam int month, @RequestParam int year) {
+        User user = userService.findById(idUser).get();
+        Integer addMoney = calenderSV.getAddMoneyByDay(idUser,day, month, year);
+        Integer transaction = calenderSV.getTransactionByDay(idUser,day, month, year);
+
+//        Integer addMoney = calenderSV.getAddMoneyByDay(idUser,day, month, year);
+//        Integer transaction = calenderSV.getTransactionByDay(idUser,day, month, year);
+
+        if (addMoney == null){
+            addMoney = 0;
+        };
+        if (transaction == null){
+            transaction = 0;
+        };
+        Calender calender = new Calender(day,month, year,transaction,addMoney, user);
+        return new ResponseEntity<>(calender, HttpStatus.OK);
+    }
+
+
+
 
     @GetMapping("/listAddMoney/{idUser}/{idWallet}")
     public ResponseEntity <List<AddMoney>> getAllAddMoney(@PathVariable Long idWallet,
@@ -244,7 +275,17 @@ public class WalletController {
 
     }
 
+    @GetMapping("listByUserAdd/{user_id}")
+    public ResponseEntity<Iterable<AddMoney>> addMoneyList( @PathVariable Long user_id ) {
+        Iterable<AddMoney> addMoneys = addMoneySV.getListAddMoneyByUser(user_id);
+        return new ResponseEntity<>(addMoneys, HttpStatus.OK);
+    }
 
+    @GetMapping("listByUserTrans/{user_id}")
+    public ResponseEntity<Iterable<Transaction>> transList( @PathVariable Long user_id ) {
+        Iterable<Transaction> transactions = transactionSV.getListTransactionsByUser(user_id);
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
 
 
 
