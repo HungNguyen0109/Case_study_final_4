@@ -21,4 +21,6 @@ public interface IAddMoneyRepo extends JpaRepository<AddMoney, Long> {
 
     @Query( nativeQuery = true, value = "select * from add_money where user_id = ?" )
     Iterable<AddMoney> getListAddMoneyByUser(Long idUser);
+
+
 }

@@ -16,9 +16,6 @@ public class ChatMessage {
     private String sender;
     private String receiver;
 
-    @ManyToOne(cascade = {CascadeType.ALL})
-    private User user;
-
     public enum MessageType {
         CHAT,
         JOIN,
@@ -28,20 +25,12 @@ public class ChatMessage {
     public ChatMessage() {
     }
 
-    public ChatMessage(MessageType type, String content, String sender, String receiver, User user) {
+    public ChatMessage(MessageType type, String content, String sender, String receiver) {
         this.type = type;
         this.content = content;
         this.sender = sender;
         this.receiver = receiver;
-        this.user = user;
-    }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public String getReceiver() {

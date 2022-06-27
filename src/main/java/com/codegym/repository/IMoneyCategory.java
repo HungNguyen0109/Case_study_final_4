@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IMoneyCategory extends JpaRepository<MoneyByCategory, Long> {
 
-    @Query(nativeQuery = true, value = "select id,sum(amount) as `sum_money`,category_id,user_id from transactions where user_id = 1 group by category_id;")
+    @Query(nativeQuery = true, value = "select id,sum(amount) as `sum_money`,category_id,user_id from transactions where user_id = ? group by category_id;")
     Iterable<MoneyByCategory> getAllCategoryByUserIDGroup(Long user_id);
 
 //    @Query(nativeQuery = true, value = "insert into categories(name, user_id) values ('?',?);")

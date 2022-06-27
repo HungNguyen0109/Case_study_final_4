@@ -3,6 +3,7 @@ package com.codegym.controller;
 import com.codegym.model.dto.AvatarForm;
 import com.codegym.model.entity.User;
 import com.codegym.model.entity.UserInfo;
+import com.codegym.service.user.IUserService;
 import com.codegym.service.user.UserService;
 import com.codegym.service.userInfo.IUserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/userInfo")
@@ -26,12 +28,20 @@ public class UserInfoController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private IUserService iUserService;
+
     @Value("${file-upload}")
     private String uploadPath;
 
     @GetMapping("/findByUserId/{userId}")
     public ResponseEntity<UserInfo> findByUserId(@PathVariable Long userId) {
         return new ResponseEntity<>(userInfoService.findByUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/findByUserIdChat/{userId}")
+    public ResponseEntity<Optional<User>> findByUserIdChat(@PathVariable Long userId) {
+        return new ResponseEntity<>(userService.findById(userId), HttpStatus.OK);
     }
 
     @PutMapping("/avatar/{userId}")
