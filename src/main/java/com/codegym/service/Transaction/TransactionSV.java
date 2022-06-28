@@ -87,4 +87,8 @@ public class TransactionSV implements ITransactionSV{
         return transactionRepo.getOutFlow(idWallet, month, year);
     }
 
+    public Iterable<Transaction> getListTransactionsByUser(Long idUser) {
+        return transactionRepo.getListTransactionsByUser(idUser);
+    }
+
 }

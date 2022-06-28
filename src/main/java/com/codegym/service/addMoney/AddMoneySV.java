@@ -46,4 +46,9 @@ public class AddMoneySV implements IAddMoneySV {
     public Iterable<AddMoney> getAllAddMoneyByIdUser(Long idUser) {
         return addMoneyRepo.getAllAddMoneyByIdUser(idUser);
     }
+
+    @Override
+    public Iterable<AddMoney> getListAddMoneyByUser(Long idUser) {
+        return addMoneyRepo.getListAddMoneyByUser(idUser);
+    }
 }

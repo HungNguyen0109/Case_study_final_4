@@ -67,5 +67,11 @@ public class AddMoneyController {
         Iterable<AddMoney> addMoneyInTimes = addMoneyService.getListAddMoneyInTimeByIdWallet(date.getDate1(), date.getDate2(), date.getWallet().getId());
         return new ResponseEntity<>(addMoneyInTimes, HttpStatus.OK);
     }
+
+    @GetMapping("/allGetMoneyByIdWallet/{id}")
+    public  ResponseEntity<Iterable<AddMoney>> getAllGetMoneyByIdWallet (@PathVariable Long id) {
+        Iterable<AddMoney> addMonies = addMoneyService.getAddMoneyByWallet(id);
+        return new ResponseEntity<>(addMonies, HttpStatus.OK);
+    }
 }
 

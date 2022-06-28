@@ -18,4 +18,7 @@ public interface IAddMoneyRepo extends JpaRepository<AddMoney, Long> {
 
     @Query(nativeQuery = true, value = "select * from add_money join wallets w on w.id = add_money.wallet_id where user_id = ?;\n")
     Iterable<AddMoney> getAllAddMoneyByIdUser(Long idUser);
+
+    @Query( nativeQuery = true, value = "select * from add_money where user_id = ?" )
+    Iterable<AddMoney> getListAddMoneyByUser(Long idUser);
 }

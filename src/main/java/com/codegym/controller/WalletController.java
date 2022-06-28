@@ -4,6 +4,7 @@ package com.codegym.controller;
 import com.codegym.model.dto.SumMoney;
 import com.codegym.model.entity.*;
 import com.codegym.model.entity.Wallet;
+import com.codegym.service.Transaction.ITransactionSV;
 import com.codegym.service.addMoney.IAddMoneySV;
 import com.codegym.service.iconUser.IIconSV;
 import com.codegym.service.inout.IInOutSV;
@@ -29,6 +30,9 @@ public class WalletController {
 
     @Autowired
     private WalletSV walletSV;
+
+    @Autowired
+    private ITransactionSV transactionSV;
 
     @Autowired
     Environment evn;
@@ -270,6 +274,21 @@ public class WalletController {
        return new ResponseEntity<>(addMonies, HttpStatus.OK);
 
     }
+
+
+
+    @GetMapping("listByUserAdd/{user_id}")
+    public ResponseEntity<Iterable<AddMoney>> addMoneyList( @PathVariable Long user_id ) {
+        Iterable<AddMoney> addMoneys = addMoneySV.getListAddMoneyByUser(user_id);
+        return new ResponseEntity<>(addMoneys, HttpStatus.OK);
+    }
+
+    @GetMapping("listByUserTrans/{user_id}")
+    public ResponseEntity<Iterable<Transaction>> transList( @PathVariable Long user_id ) {
+        Iterable<Transaction> transactions = transactionSV.getListTransactionsByUser(user_id);
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
+    }
+
 
 
 

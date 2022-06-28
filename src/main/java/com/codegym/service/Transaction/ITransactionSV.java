@@ -30,6 +30,7 @@ public interface ITransactionSV extends IGeneralService<Transaction> {
 
     int getOutFlow(Long idWallet, int month, int year);
 
+    Iterable<Transaction> getListTransactionsByUser(Long idUser);
 
 
 }
