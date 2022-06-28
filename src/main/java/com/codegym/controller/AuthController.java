@@ -2,9 +2,11 @@ package com.codegym.controller;
 import com.codegym.model.dto.ChangePassword;
 import com.codegym.model.dto.JwtResponse;
 import com.codegym.model.dto.SignUpForm;
+import com.codegym.model.entity.Session;
 import com.codegym.model.entity.User;
 import com.codegym.model.entity.UserInfo;
 import com.codegym.service.JwtService;
+import com.codegym.service.iSession.ISession;
 import com.codegym.service.user.IUserService;
 import com.codegym.service.userInfo.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,9 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private ISession iSession;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user) {
         //Kiểm tra username và pass có đúng hay không
@@ -51,6 +56,25 @@ public class AuthController {
         String jwt = jwtService.generateTokenLogin(authentication);
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         User currentUser = userService.findByUserName(user.getUsername());
+        Session session = new Session(currentUser.getId());
+        iSession.save(session);
+        return ResponseEntity.ok(new JwtResponse(currentUser.getId(), jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+    }
+
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestBody User user) {
+        //Kiểm tra username và pass có đúng hay không
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        //Lưu user đang đăng nhập vào trong context của security
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String jwt = jwtService.generateTokenLogin(authentication);
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        User currentUser = userService.findByUserName(user.getUsername());
+        Session session = new Session(currentUser.getId());
+        iSession.save(session);
         return ResponseEntity.ok(new JwtResponse(currentUser.getId(), jwt, userDetails.getUsername(), userDetails.getAuthorities()));
     }
 
